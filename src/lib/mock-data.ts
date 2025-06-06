@@ -3,7 +3,7 @@ export interface File {
   name: string;
   type: "file";
   url: string;
-  parent: string | null;
+  parent: string;
   size: string;
 }
 
@@ -60,7 +60,7 @@ export const mockFiles: File[] = [
     name: "Q4 Report.pptx",
     type: "file",
     url: "/files/q4-report.pptx",
-    parent: "8",
+    parent: "4",
     size: "5.2 MB",
   },
   {

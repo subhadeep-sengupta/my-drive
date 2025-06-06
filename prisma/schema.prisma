@@ -10,9 +10,28 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model File {
+    id                    String        @id @default(cuid())
+    name                  String
+    type                  Itemtype
+    url                   String
+    parentId              String
+    size                  Int
+    folder                Folder        @relation(fields: [parentId], references: [id])
+}
 
-model User {
-    id       Int       @id @default(autoincrement())
-    name     String
-    age      Int
+
+model Folder {
+    id                    String        @id @default(cuid())
+    name                  String
+    type                  Itemtype
+    parentId              String?
+    parent                Folder?      @relation("FolderToFolder", fields: [parentId], references: [id])
+    children              Folder[]     @relation("FolderToFolder")
+    files                 File[]
+}
+
+enum Itemtype {
+    file
+    folder
 }
