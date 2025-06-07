@@ -1,6 +1,6 @@
 import { Folder as FolderIcon, FileIcon } from "lucide-react";
 import Link from "next/link";
-import type { File, Folder } from "~/lib/mock-data";
+import type { File, Folder } from "@prisma/client";
 
 export function Filerow(props: { file: File }) {
   const { file } = props;
