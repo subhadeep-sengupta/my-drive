@@ -27,11 +27,8 @@ export function Filerow(props: { file: File }) {
   );
 }
 
-export function Folderrow(props: {
-  folder: Folder;
-  handleFolderClick: () => void;
-}) {
-  const { folder, handleFolderClick } = props;
+export function Folderrow(props: { folder: Folder }) {
+  const { folder } = props;
   return (
     <li
       key={folder.id}
@@ -39,13 +36,13 @@ export function Folderrow(props: {
     >
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
-          <button
-            onClick={() => handleFolderClick()}
+          <Link
+            href={`/f/${folder.id}`}
             className="flex items-center text-gray-100 hover:text-blue-400"
           >
             <FolderIcon className="mr-3" size={20} />
             {folder.name}
-          </button>
+          </Link>
         </div>
         <div className="col-span-3 text-gray-400">
           {folder.type === "folder" ? "Folder" : "File"}
