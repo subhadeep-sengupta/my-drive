@@ -5,12 +5,16 @@ import { Filerow, Folderrow } from "./file-row";
 import type { File, Folder } from "@prisma/client";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { UploadButton } from "~/components/uploadThing";
+import { useRouter } from "next/navigation";
 
 export default function DriveContents(props: {
   files: File[];
   folders: Folder[];
   parents: Folder[];
 }) {
+  const navigate = useRouter();
+
   return (
     <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
       <div className="mx-auto max-w-6xl">
@@ -61,6 +65,19 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
+        <UploadButton
+          endpoint="imageUploader"
+          onClientUploadComplete={(res) => {
+            // Do something with the response
+            navigate.refresh();
+            console.log("Files: ", res);
+            alert("Upload Completed");
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            alert(`ERROR! ${error.message}`);
+          }}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,7 @@
 import "~/styles/globals.css";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
@@ -21,7 +24,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
-        <body>{children}</body>
+        <body>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );

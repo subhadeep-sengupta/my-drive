@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Folder } from "@prisma/client";
+import type { Folder, File } from "@prisma/client";
 import { db } from "./db";
 
 export const QUERIES = {
@@ -38,5 +38,22 @@ export const QUERIES = {
       },
     });
     return foldersPromise;
+  },
+};
+
+export const MUTATIONS = {
+  createFile: async function (
+    data: {
+      name: string;
+      type: string;
+      size: number;
+      url: string;
+      parentId: string;
+    },
+    userId: string,
+  ) {
+    return await db.file.create({
+      data: data,
+    });
   },
 };
