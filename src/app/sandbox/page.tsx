@@ -1,7 +1,22 @@
 import { db } from "~/server/db";
-import { mockFiles, mockFolders } from "~/lib/mock-data";
+import { mockFolders } from "~/lib/mock-data";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Sandbox() {
+export default async function Sandbox() {
+  const user = await auth();
+
+  if (!user.userId) {
+    throw new Error("User not found!");
+  }
+
+  const folders = await db.folder.findMany({
+    where: {
+      ownerId: user.userId,
+    },
+  });
+
+  console.log(folders);
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       Seed Function {` `}
@@ -9,31 +24,33 @@ export default function Sandbox() {
         action={async () => {
           "use server";
 
-          const insertFolder = await db.folder.createMany({
-            data: mockFolders.map((folder) => ({
-              id: folder.id,
-              name: folder.name,
-              parentId: folder.parent,
+          const user = await auth();
+
+          if (!user.userId) {
+            throw new Error("User not found");
+          }
+
+          const rootFolder = await db.folder.create({
+            data: {
+              name: "root",
+              ownerId: user.userId,
               type: "folder",
-            })),
-            skipDuplicates: true,
+              parentId: null,
+            },
           });
 
-          console.log(insertFolder);
+          const rootFolderId = rootFolder.id;
 
-          const insertFile = await db.file.createMany({
-            data: mockFiles.map((file) => ({
-              id: file.id,
-              name: file.name,
-              url: file.url,
-              size: 500,
-              parentId: file.parent,
-              type: "file" as const,
-            })),
-            skipDuplicates: true,
-          });
+          const insertableFolder = mockFolders.map((folder) => ({
+            name: folder.name,
+            ownerId: user.userId,
+            parentId: rootFolderId,
+            type: "folder",
+          }));
 
-          console.log(insertFile);
+          await db.folder.createMany({ data: insertableFolder });
+
+          // console.log(insertFolder);
         }}
       >
         <button type="submit">Seed</button>

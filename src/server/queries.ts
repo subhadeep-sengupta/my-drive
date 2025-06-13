@@ -1,7 +1,8 @@
 import "server-only";
 
-import type { Folder, File } from "@prisma/client";
+import type { Folder } from "@prisma/client";
 import { db } from "./db";
+import { get } from "http";
 
 export const QUERIES = {
   getAllParentsForFolders: async function (folderId: string) {
@@ -39,6 +40,15 @@ export const QUERIES = {
     });
     return foldersPromise;
   },
+
+  getFolderId: async function (folderId: string) {
+    const folder = await db.folder.findMany({
+      where: {
+        id: folderId,
+      },
+    });
+    return folder[0];
+  },
 };
 
 export const MUTATIONS = {
@@ -49,6 +59,7 @@ export const MUTATIONS = {
       size: number;
       url: string;
       parentId: string;
+      ownerId: string;
     },
     userId: string,
   ) {

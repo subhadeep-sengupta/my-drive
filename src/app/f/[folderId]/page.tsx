@@ -12,5 +12,12 @@ export default async function MyDrive(props: {
     QUERIES.getAllParentsForFolders(params.folderId),
   ]);
 
-  return <DriveContents files={files} folders={folders} parents={parents} />;
+  return (
+    <DriveContents
+      files={files}
+      folders={folders}
+      parents={parents}
+      currentFolderId={params.folderId}
+    />
+  );
 }
