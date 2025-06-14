@@ -2,7 +2,6 @@ import "server-only";
 
 import type { Folder } from "@prisma/client";
 import { db } from "./db";
-import { get } from "http";
 
 export const QUERIES = {
   getAllParentsForFolders: async function (folderId: string) {
@@ -28,6 +27,9 @@ export const QUERIES = {
       where: {
         parentId: folderId,
       },
+      orderBy: {
+        name: "asc",
+      },
     });
     return filesPromise;
   },
@@ -36,6 +38,9 @@ export const QUERIES = {
     const foldersPromise = db.folder.findMany({
       where: {
         parentId: folderId,
+      },
+      orderBy: {
+        name: "asc",
       },
     });
     return foldersPromise;
