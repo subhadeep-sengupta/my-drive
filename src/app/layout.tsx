@@ -6,6 +6,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { PostHogProvider } from "../app/_providers/posthog-provider";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -25,8 +26,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
-          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          {children}
+          <PostHogProvider>
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+            {children}
+          </PostHogProvider>
         </body>
       </html>
     </ClerkProvider>

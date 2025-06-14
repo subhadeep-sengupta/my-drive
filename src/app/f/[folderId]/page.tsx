@@ -1,4 +1,4 @@
-import DriveContents from "../../drive-content";
+import DriveContents from "./drive-content";
 import { QUERIES } from "../../../server/queries";
 
 export default async function MyDrive(props: {
