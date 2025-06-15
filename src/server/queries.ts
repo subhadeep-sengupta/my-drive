@@ -54,6 +54,17 @@ export const QUERIES = {
     });
     return folder[0];
   },
+
+  getRootFolderForUser: async function (userId: string) {
+    const rootFolder = await db.folder.findFirst({
+      where: {
+        ownerId: userId,
+        parentId: null,
+      },
+    });
+
+    return rootFolder;
+  },
 };
 
 export const MUTATIONS = {
