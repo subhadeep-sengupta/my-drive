@@ -83,4 +83,40 @@ export const MUTATIONS = {
       data: data,
     });
   },
+  onBoardUser: async function (userId: string) {
+    const rootFolder = await db.folder.create({
+      data: {
+        name: "root",
+        ownerId: userId,
+        type: "folder",
+        parentId: null,
+      },
+    });
+    const rootFolderId = rootFolder.id;
+
+    await db.folder.createMany({
+      data: [
+        {
+          name: "Trash",
+          ownerId: userId,
+          type: "folder",
+          parentId: rootFolderId,
+        },
+        {
+          name: "Documents",
+          ownerId: userId,
+          type: "folder",
+          parentId: rootFolderId,
+        },
+        {
+          name: "Images",
+          ownerId: userId,
+          type: "folder",
+          parentId: rootFolderId,
+        },
+      ],
+    });
+
+    return rootFolderId;
+  },
 };

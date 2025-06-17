@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { QUERIES } from "~/server/queries";
+import { Button } from "~/components/ui/button";
+import { MUTATIONS, QUERIES } from "~/server/queries";
 
 export default async function DrivePage() {
   const session = await auth();
@@ -12,8 +13,12 @@ export default async function DrivePage() {
   const rootFolder = await QUERIES.getRootFolderForUser(session.userId);
 
   if (!rootFolder) {
-    return redirect("/");
+    const rootFolderId = await MUTATIONS.onBoardUser(session.userId);
+
+    return redirect(`/f/${rootFolderId}`);
   }
 
   return redirect(`/f/${rootFolder.id}`);
+
 }
+
