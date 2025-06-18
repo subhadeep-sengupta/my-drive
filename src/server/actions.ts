@@ -66,3 +66,63 @@ export  async function createFolder(name:string, parentId: string ) {
   return folder
 
 }
+
+export async function deleteFolder(folderId: string) {
+
+ const session = await auth();
+
+  if (!session.userId) {
+    throw new Error("Unauthorized");
+  }
+
+const deleteResult = await db.$transaction(async (tx) => {
+      // First, get all descendant folder IDs recursively
+      const getAllDescendantIds = async (parentId: string): Promise<string[]> => {
+        const children = await tx.folder.findMany({
+          where: { parentId },
+          select: { id: true }
+        });
+        
+        let allIds = children.map(child => child.id);
+        
+        // Recursively get children of children
+        for (const child of children) {
+          const grandChildren = await getAllDescendantIds(child.id);
+          allIds = allIds.concat(grandChildren);
+        }
+        
+        return allIds;
+      };
+
+      // Get all descendant folder IDs
+      const descendantIds = await getAllDescendantIds(folderId);
+      const allFolderIds = [folderId, ...descendantIds];
+
+      // Delete all files in all these folders
+      const deletedFiles = await tx.file.deleteMany({
+        where: {
+          parentId: {
+            in: allFolderIds
+          }
+        }
+      });
+
+      // Delete all folders (children first, then parent)
+      const deletedFolders = await tx.folder.deleteMany({
+        where: {
+          id: {
+            in: allFolderIds
+          }
+        }
+      });
+
+      return { deletedFiles, deletedFolders };
+    });
+    
+    console.log('Delete result:', deleteResult);
+
+    const c = await cookies();
+    c.set("force refresh", JSON.stringify(Math.random()));
+
+    return { success: true, message: 'Folder deleted successfully' };
+  }

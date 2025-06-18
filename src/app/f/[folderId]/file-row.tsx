@@ -2,7 +2,7 @@ import { Folder as FolderIcon, FileIcon, Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import type { File, Folder } from "@prisma/client";
 import { Button } from "~/components/ui/button";
-import { deleteFile } from "~/server/actions";
+import { deleteFile, deleteFolder } from "~/server/actions";
 
 export function Filerow(props: { file: File }) {
   const { file } = props;
@@ -57,8 +57,8 @@ export function Folderrow(props: { folder: Folder }) {
         <div className="col-span-2 text-gray-400">
           {folder.type === "folder" ? "--" : "2 MB"}
         </div>
-        <div className="col-span-1 text-gray-400" aria-label="Delete file">
-          <Button variant="ghost" onClick={() => alert(`Folder delete triggered`)}>
+        <div className="col-span-1 text-gray-400" aria-label="Delete folder">
+          <Button variant="ghost" onClick={() => deleteFolder(folder.id)}>
             <Trash2Icon size={20} />
           </Button>
         </div>
