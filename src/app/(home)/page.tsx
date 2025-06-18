@@ -19,12 +19,7 @@ export default async function HomePage() {
             <HardDrive className="h-8 w-8 text-white" />
             <span className="text-2xl font-bold">My Drive</span>
           </div>
-          <Button
-            variant="outline"
-            className="border-gray-600 text-white hover:bg-gray-800"
-          >
-            Sign In
-          </Button>
+
         </nav>
       </header>
 

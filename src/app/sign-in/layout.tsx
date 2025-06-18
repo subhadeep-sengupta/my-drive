@@ -1,4 +1,3 @@
-import { Button } from "~/components/ui/button";
 import { HardDrive } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
@@ -20,12 +19,6 @@ export default async function SigninLayout({
                         <HardDrive className="h-8 w-8 text-white" />
                         <span className="text-2xl font-bold">My Drive</span>
                     </div>
-                    <Button
-                        variant="outline"
-                        className="border-gray-600 text-white hover:bg-gray-800"
-                    >
-                        Sign In
-                    </Button>
                 </nav>
             </header>
             {children}
