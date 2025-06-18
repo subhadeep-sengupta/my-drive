@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { Button } from "~/components/ui/button";
 import { MUTATIONS, QUERIES } from "~/server/queries";
 
 export default async function DrivePage() {

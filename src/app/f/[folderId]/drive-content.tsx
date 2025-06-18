@@ -7,6 +7,7 @@ import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/components/uploadThing";
 import { useRouter } from "next/navigation";
+import CreateFolder from "./folder";
 
 export default function DriveContents(props: {
   files: File[];
@@ -22,7 +23,7 @@ export default function DriveContents(props: {
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
             <Link
-              href={`/f/root`}
+              href={`/`}
               className="mr-2 text-gray-300 hover:text-white"
             >
               My Drive
@@ -39,10 +40,9 @@ export default function DriveContents(props: {
               </div>
             ))}
           </div>
-          <div className="">
+          <div>
             <SignedOut>
               <SignInButton />
-              {/* <SignUpButton /> */}
             </SignedOut>
             <SignedIn>
               <UserButton />
@@ -53,8 +53,8 @@ export default function DriveContents(props: {
           <div className="border-b border-gray-700 px-6 py-4">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
               <div className="col-span-6">Name</div>
-              <div className="col-span-2">Size</div>
               <div className="col-span-3">Type</div>
+              <div className="col-span-3">Size</div>
               <div className="col-span-1"></div>
             </div>
           </div>
@@ -67,22 +67,26 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <UploadButton
-          endpoint="driveUploader"
-          onClientUploadComplete={(res) => {
-            // Do something with the response
-            navigate.refresh();
-            console.log("Files: ", res);
-            alert("Upload Completed");
-          }}
-          onUploadError={(error: Error) => {
-            // Do something with the error.
-            alert(`ERROR! ${error.message}`);
-          }}
-          input={{
-            folderId: props.currentFolderId,
-          }}
-        />
+        <div className="flex items-center justify-center">
+          <CreateFolder parentId={props.currentFolderId} />
+          <UploadButton
+            className="mt-3.5"
+            endpoint="driveUploader"
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              navigate.refresh();
+              console.log("Files: ", res);
+              alert("Upload Completed");
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+              alert(`ERROR! ${error.message}`);
+            }}
+            input={{
+              folderId: props.currentFolderId,
+            }}
+          />
+        </div>
       </div>
     </div>
   );

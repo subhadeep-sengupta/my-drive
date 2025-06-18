@@ -119,4 +119,15 @@ export const MUTATIONS = {
 
     return rootFolderId;
   },
+  createFolder: async function(data: {
+    name:string,
+    type:string,
+    ownerId:string,
+    parentId:string
+  }) {
+   return await db.folder.create({
+      data: data
+    })
+  
+  }
 };

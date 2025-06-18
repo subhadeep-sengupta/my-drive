@@ -22,8 +22,8 @@ export function Filerow(props: { file: File }) {
             {file.name}
           </Link>
         </div>
-        <div className="col-span-2 text-gray-400">{"file"}</div>
-        <div className="col-span-3 text-gray-400">{file.size}</div>
+        <div className="col-span-3 text-gray-400">{"File"}</div>
+        <div className="col-span-2 text-gray-400">{file.size}</div>
         <div className="col-span-1 text-gray-400" aria-label="Delete file">
           <Button variant="ghost" onClick={() => deleteFile(file.id)}>
             <Trash2Icon size={20} />
@@ -54,8 +54,13 @@ export function Folderrow(props: { folder: Folder }) {
         <div className="col-span-3 text-gray-400">
           {folder.type === "folder" ? "Folder" : "File"}
         </div>
-        <div className="col-span-3 text-gray-400">
+        <div className="col-span-2 text-gray-400">
           {folder.type === "folder" ? "--" : "2 MB"}
+        </div>
+        <div className="col-span-1 text-gray-400" aria-label="Delete file">
+          <Button variant="ghost" onClick={() => alert(`Folder delete triggered`)}>
+            <Trash2Icon size={20} />
+          </Button>
         </div>
       </div>
     </li>
